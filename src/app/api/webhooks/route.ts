@@ -54,4 +54,15 @@ export async function POST(req: Request) {
     console.log("User details", id, username, email_addresses[0].email_address);
   }
 
+  if(eventType === "user.deleted"){
+    const {id} = evt.data
+    console.log("Deleted user details", id);
+  }
+
+  if(eventType === "user.updated"){
+    const {id} = evt.data
+    console.log("Updated user details", id);
+  }
+
+  return new Response("Everything OK!", { status: 200 })
 }
