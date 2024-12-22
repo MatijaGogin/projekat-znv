@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-let isConnected:Boolean = false;
+let isConnected:boolean = false;
 export async function connectDB() {
 
     mongoose.set("strictQuery", true);
