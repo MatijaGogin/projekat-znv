@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { createUser } from '@/actions/user.action'
+import { createUser, deleteUser, updateUser } from '@/actions/user.action'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       clerkId: id,
       username: username || "MyUser",
       email: email_addresses[0].email_address,
-      picture: image_url
+      picture: image_url,
     });
 
     return NextResponse.json({message: "UserCreated", userCreated});
@@ -68,11 +68,22 @@ export async function POST(req: Request) {
   if(eventType === "user.deleted"){
     const {id} = evt.data
     console.log("Deleted user details", id);
+
+    await deleteUser({ clerkId:id! })
+
+    NextResponse.json("Deleted!");
   }
 
   if(eventType === "user.updated"){
-    const {id} = evt.data
+    const { id, username, email_addresses, image_url } = evt.data
     console.log("Updated user details", id);
+
+    await updateUser({
+      clerkId: id,
+      username: username || "MyUser",
+      email: email_addresses[0].email_address,
+      picture: image_url,
+    })
   }
 
   return new Response("Everything OK!", { status: 200 })
