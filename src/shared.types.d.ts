@@ -1,4 +1,4 @@
-interface CreateUserParams{
+export interface CreateUserParams{
     clerkId: string,
     username: string,
     email: string,
